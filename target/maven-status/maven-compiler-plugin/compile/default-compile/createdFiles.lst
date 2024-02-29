@@ -1,0 +1,4 @@
+br\com\avaliacao\dao\UsuarioDAO.class
+br\com\avaliacao\action\UsuarioAction.class
+br\com\avaliacao\action\IndexAction.class
+br\com\avaliacao\model\Usuario.class
