@@ -1,5 +1,6 @@
 package br.com.avaliacao.action;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
@@ -37,12 +38,25 @@ public class UsuarioAction extends ActionSupport implements SessionAware{
     }
 
     public String execute() {
-        Usuario usuario = usuarioDAO.consultarUsuarioPorLogin(login);
-        if (usuario != null && usuario.getDsSenha().equals(senha)) {
-        	session.put("usuarioLogado", usuario);
-            return SUCCESS;
-        } else {
-            addActionError("Login ou senha incorretos!");
+    	
+        if (login == null || login.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
+            // Se os campos estiverem vazios, não faz nada e retorna INPUT
+            return INPUT;
+        }
+        try {
+            Usuario usuario = usuarioDAO.consultarUsuarioPorLogin(login);
+            // Criptografa a senha fornecida pelo usuário
+            String senhaCriptografada = usuarioDAO.criptografarSenha(senha);
+            if (usuario != null && usuario.getDsSenha().equals(senhaCriptografada)) {
+                session.put("usuarioLogado", usuario);
+                return SUCCESS;
+            } else {
+                addActionError("Login ou senha incorretos!");
+                return INPUT;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // Tratamento de exceção
+            addActionError("Erro ao processar a senha.");
             return INPUT;
         }
     }

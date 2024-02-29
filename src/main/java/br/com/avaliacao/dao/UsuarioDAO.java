@@ -1,12 +1,12 @@
 package br.com.avaliacao.dao;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.avaliacao.model.Usuario;
 
@@ -15,24 +15,32 @@ public class UsuarioDAO {
 
     public UsuarioDAO() {
         try {
-            // Substitua os valores abaixo pelos detalhes da sua conexão
-            String url = "jdbc:mysql://localhost:3306/avaliacao";
-            String user = "root";
-            String password = "12345";
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			this.connection = Conexao.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 
+    
+    public String criptografarSenha(String senha) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(senha.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+    
     public void inserirUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuario (nm_login, ds_senha, qt_tempo_inatividade) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, usuario.getNmLogin());
-            stmt.setString(2, usuario.getDsSenha());
+            // Criptografa a senha antes de inserir
+            stmt.setString(2, criptografarSenha(usuario.getDsSenha()));
             stmt.setInt(3, usuario.getQtTempoInatividade());
             stmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
@@ -58,11 +66,12 @@ public class UsuarioDAO {
     public void atualizarUsuario(Usuario usuario) {
         String sql = "UPDATE usuario SET ds_senha = ?, qt_tempo_inatividade = ? WHERE nm_login = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, usuario.getDsSenha());
+            // Criptografa a senha antes de atualizar
+            stmt.setString(1, criptografarSenha(usuario.getDsSenha()));
             stmt.setInt(2, usuario.getQtTempoInatividade());
             stmt.setString(3, usuario.getNmLogin());
             stmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
