@@ -6,7 +6,7 @@ public class IndexAction implements Action {
 
 	@Override
 	public String execute() throws Exception {
-		return "sucess";
+		return SUCCESS;
 	}
 
 }
