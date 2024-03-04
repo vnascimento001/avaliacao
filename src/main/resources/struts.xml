@@ -8,11 +8,10 @@
 	<constant name="struts.devMode" value="true" />
 
 	<package name="default" namespace="/" extends="struts-default,json-default">
-		<action name=""
+		<action name="login"
 			class="br.com.avaliacao.action.UsuarioAction">
 			<result name="success" type="redirectAction">home</result>
 			<result name="input">/views/login.jsp</result>
-			<result name="logout">/views/login.jsp</result>
 		</action>
 		
 		<action name="home" class="br.com.avaliacao.action.UsuarioAction" method="isLogado">
@@ -21,11 +20,11 @@
 		</action>
 		
 		<action name="logout" class="br.com.avaliacao.action.UsuarioAction" method="logout">
-			<result name="success" type="redirectAction">home</result>
+			<result name="success" type="redirectAction">login</result>
 		</action>
 
 		<action name="exame" class="br.com.avaliacao.action.ExameAction">
-			<result name="success">/views/exame.jsp</result>
+			<result name="success">/views/login.jsp</result>
 		</action>
 
 

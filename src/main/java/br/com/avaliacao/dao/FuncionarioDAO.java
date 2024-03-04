@@ -12,10 +12,12 @@ import br.com.avaliacao.model.Funcionario;
 public class FuncionarioDAO {
 	
 	
-    public List<Funcionario> listarFuncionarios() {
+    public List<Funcionario> listarFuncionarios(int pageNumber, int pageSize) {
         List<Funcionario> funcionarios = new ArrayList<>();
         try (Connection conn = Conexao.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cd_funcionario, nm_funcionario FROM funcionario")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT cd_funcionario, nm_funcionario FROM funcionario LIMIT ? OFFSET ?")) {
+            ps.setInt(1, pageSize);
+            ps.setInt(2, (pageNumber - 1) * pageSize);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Funcionario funcionario = new Funcionario();
@@ -79,5 +81,19 @@ public class FuncionarioDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public int countTotalFuncionarios() {
+        int totalRecords = 0;
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT COUNT(cd_funcionario) FROM funcionario")) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                totalRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRecords;
     }
 }
