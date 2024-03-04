@@ -65,4 +65,11 @@ public class UsuarioAction extends ActionSupport implements SessionAware{
         session.remove("usuarioLogado");
         return SUCCESS;
     }
+    
+    public String isLogado() {
+    	if (session.get("usuarioLogado") != null) {
+    		return SUCCESS;
+    	}
+    	return INPUT;
+    }
 }

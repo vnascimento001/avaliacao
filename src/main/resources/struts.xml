@@ -7,22 +7,47 @@
 		value="false" />
 	<constant name="struts.devMode" value="true" />
 
-	<package name="default" namespace="/" extends="struts-default">
-		<action name="index">
-			<result type="redirectAction">
-				<param name="actionName">login</param>
-			</result>
-		</action>
-		<action name="login"
+	<package name="default" namespace="/" extends="struts-default,json-default">
+		<action name=""
 			class="br.com.avaliacao.action.UsuarioAction">
-			<result name="success">/views/home.jsp</result>
+			<result name="success" type="redirectAction">home</result>
 			<result name="input">/views/login.jsp</result>
 			<result name="logout">/views/login.jsp</result>
 		</action>
+		
+		<action name="home" class="br.com.avaliacao.action.UsuarioAction" method="isLogado">
+			<result name="success">/views/home.jsp</result>
+			<result name="input">/views/login.jsp</result>
+		</action>
+		
+		<action name="logout" class="br.com.avaliacao.action.UsuarioAction" method="logout">
+			<result name="success" type="redirectAction">home</result>
+		</action>
 
-		<action name="logout"
-			class="br.com.avaliacao.action.UsuarioAction" method="logout">
-			<result name="success">/views/login.jsp</result>
+		<action name="exame" class="br.com.avaliacao.action.ExameAction">
+			<result name="success">/views/exame.jsp</result>
+		</action>
+
+
+		<action name="funcionario" class="br.com.avaliacao.action.FuncionarioAction" method="listarFuncionarios">
+			<result name="success">/views/funcionario.jsp</result>
+		</action>
+        <action name="adicionarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="adicionarFuncionario">
+            <result name="success">/views/funcionario/adicionarFuncionario.jsp</result>
+        </action>
+        <action name="salvarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="salvarFuncionario">
+            <result name="success" type="redirectAction">funcionario</result>
+            <result name="error" type="redirectAction">funcionario</result>
+        </action>
+        <action name="editarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="editarFuncionario">
+            <result name="success">/views/funcionario/editarFuncionario.jsp</result>
+        </action>
+        <action name="atualizarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="atualizarFuncionario">
+             <result name="success" type="redirectAction">funcionario</result>
+             <result name="input" type="redirectAction">funcionario</result>
+        </action>
+        <action name="deletarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="deletarFuncionario">
+            <result name="success" type="redirectAction">funcionario</result>
 		</action>
 	</package>
 </struts>
