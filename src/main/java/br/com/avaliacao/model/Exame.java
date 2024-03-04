@@ -3,7 +3,7 @@ package br.com.avaliacao.model;
 public class Exame {
     private int cdExame;
     private String nmExame;
-    private boolean icAtivo;
+    private int icAtivo;
     private String dsDetalheExame;
     private String dsDetalheExame1;
     
@@ -19,10 +19,10 @@ public class Exame {
 	public void setNmExame(String nmExame) {
 		this.nmExame = nmExame;
 	}
-	public boolean isIcAtivo() {
+	public int isIcAtivo() {
 		return icAtivo;
 	}
-	public void setIcAtivo(boolean icAtivo) {
+	public void setIcAtivo(int icAtivo) {
 		this.icAtivo = icAtivo;
 	}
 	public String getDsDetalheExame() {

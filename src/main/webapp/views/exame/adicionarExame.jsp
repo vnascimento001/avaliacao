@@ -6,7 +6,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="styles/background.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <title>Adicionar funcionário</title>
+    <title>Adicionar exame</title>
     <style>
         .full-height {
             min-height: 80vh;
@@ -18,13 +18,25 @@
     <div class="d-flex align-items-center justify-content-center full-height">
         <div class="card" style="width: 25rem;">
             <div class="card-header text-center">
-                <h2>Adicionar funcionário</h2>
+                <h2>Adicionar exame</h2>
             </div>
             <div class="card-body">
-                <s:form action="salvarFuncionario" method="atualizarFuncionario">
+                <s:form action="salvarExame" method="atualizarExame">
                     <div class="form-group">           
-                        <label for="nmFuncionario">Nome:</label>
-                        <input type="text" class="form-control" id="nmFuncionario" name="nmFuncionario" value=''>
+                        <label for="nmFuncionario">Nome do exame:</label>
+                        <input type="text" class="form-control" id="nmExame" name="nmExame" value='' required>
+                        <label for="icAtivo">Ativo:</label><br>
+						<label>
+						 <input type="radio" name="icAtivo" value="1" required> Sim
+						</label>
+						<label>
+						 <input type="radio" name="icAtivo" value="0" required> Não
+						</label>
+					    <br>
+					    <label for="dsDetalheExame">Detalhes:</label>
+                        <input type="text" class="form-control" id="dsDetalheExame" name="dsDetalheExame" value='' required>
+                        <label for="dsDetalheExame1">Mais detalhes:</label>
+                        <input type="text" class="form-control" id="dsDetalheExame1" name="dsDetalheExame1" value='' required>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Adicionar</button>
@@ -33,11 +45,5 @@
             </div>
         </div>
     </div>
-    <s:if test="ctr>0">
-        <span style="color: red;"><s:property value="msg" /></span>
-    </s:if>
-    <s:else>
-        <span style="color: red;"><s:property value="msg" /></span>
-    </s:else>
 </body>
 </html>

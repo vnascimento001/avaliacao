@@ -7,7 +7,7 @@
 		value="false" />
 	<constant name="struts.devMode" value="true" />
 
-	<package name="default" namespace="/" extends="struts-default,json-default">
+	<package name="default" namespace="/" extends="struts-default">
 		<action name="login"
 			class="br.com.avaliacao.action.UsuarioAction">
 			<result name="success" type="redirectAction">home</result>
@@ -23,10 +23,29 @@
 			<result name="success" type="redirectAction">login</result>
 		</action>
 
-		<action name="exame" class="br.com.avaliacao.action.ExameAction">
-			<result name="success">/views/login.jsp</result>
+		<action name="exame" class="br.com.avaliacao.action.ExameAction" method="exames">
+			<result name="success">/views/exame.jsp</result>
 		</action>
-
+		<action name="listarExames" class="br.com.avaliacao.action.ExameAction" method="listarExames">
+			<result name="success">/views/exame.jsp</result>
+		</action>
+		<action name="adicionarExame" class="br.com.avaliacao.action.ExameAction" method="adicionarExame">
+			<result name="success">/views/exame/adicionarExame.jsp</result>
+		</action>
+        <action name="salvarExame" class="br.com.avaliacao.action.ExameAction" method="salvarExame">
+            <result name="success" type="redirectAction">exame</result>
+            <result name="error" type="redirectAction">exame</result>
+        </action>
+		<action name="editarExame" class="br.com.avaliacao.action.ExameAction" method="editarExame">
+			<result name="success">/views/exame/editarExame.jsp</result>
+		</action>
+        <action name="atualizarExame" class="br.com.avaliacao.action.ExameAction" method="atualizarExame">
+             <result name="success" type="redirectAction">exame</result>
+             <result name="input" type="redirectAction">exame</result>
+        </action>
+        <action name="deletarExame" class="br.com.avaliacao.action.ExameAction" method="deletarExame">
+            <result name="success" type="redirectAction">funcionario</result>
+		</action>
 
 		<action name="funcionario" class="br.com.avaliacao.action.FuncionarioAction" method="listarFuncionarios">
 			<result name="success">/views/funcionario.jsp</result>

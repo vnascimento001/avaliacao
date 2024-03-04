@@ -54,7 +54,7 @@ public class ExameRealizadoDAO {
                 Exame exame = new Exame();
                 exame.setCdExame(rs.getInt("cd_exame"));
                 exame.setNmExame(rs.getString("nm_exame"));
-                exame.setIcAtivo(rs.getBoolean("ic_ativo"));
+                exame.setIcAtivo(rs.getInt("ic_ativo"));
                 examesAtivos.add(exame);
             }
         } catch (SQLException e) {
