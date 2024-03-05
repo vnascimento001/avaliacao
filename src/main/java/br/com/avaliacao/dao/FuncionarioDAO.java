@@ -12,44 +12,6 @@ import jakarta.ejb.*;
 import br.com.avaliacao.model.Funcionario;
 @Stateless
 public class FuncionarioDAO {
-	
-	
-    public List<Funcionario> listarFuncionarios(int pageNumber, int pageSize) {
-        List<Funcionario> funcionarios = new ArrayList<>();
-        try (Connection conn = Conexao.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cd_funcionario, nm_funcionario FROM funcionario LIMIT ? OFFSET ?")) {
-            ps.setInt(1, pageSize);
-            ps.setInt(2, (pageNumber - 1) * pageSize);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Funcionario funcionario = new Funcionario();
-                funcionario.setCdFuncionario(rs.getInt("cd_funcionario"));
-                funcionario.setNmFuncionario(rs.getString("nm_funcionario"));
-                funcionarios.add(funcionario);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return funcionarios;
-    }
-
-    public List<Funcionario> buscarFuncionariosAtivos() {
-    	List<Funcionario> funcionarios = new ArrayList<>();
-        String sql = "SELECT cd_funcionario, nm_funcionario FROM funcionario";
-        try (Connection conn = Conexao.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-            	Funcionario funcionario = new Funcionario();
-            	funcionario.setCdFuncionario(rs.getInt("cd_funcionario"));
-            	funcionario.setNmFuncionario(rs.getString("nm_funcionario"));
-            	funcionarios.add(funcionario);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return funcionarios;
-    }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void inserirFuncionario(Funcionario funcionario) {
@@ -59,7 +21,7 @@ public class FuncionarioDAO {
             ps.setString(1, funcionario.getNmFuncionario());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao inserir funcionário", e);
         }
     }
 
@@ -72,7 +34,7 @@ public class FuncionarioDAO {
             ps.setInt(2, funcionario.getCdFuncionario());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar funcionário", e);
         }
     }
 
@@ -84,10 +46,39 @@ public class FuncionarioDAO {
             ps.setInt(1, cdFuncionario);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao deletar funcionário", e);
         }
     }
-    
+
+    public List<Funcionario> listarFuncionarios(int pageNumber, int pageSize) {
+        return listarFuncionariosBase("SELECT cd_funcionario, nm_funcionario FROM funcionario LIMIT ? OFFSET ?", pageNumber, pageSize);
+    }
+
+    public List<Funcionario> buscarFuncionariosAtivos() {
+        return listarFuncionariosBase("SELECT cd_funcionario, nm_funcionario FROM funcionario", 1, Integer.MAX_VALUE);
+    }
+
+    private List<Funcionario> listarFuncionariosBase(String sql, int pageNumber, int pageSize) {
+        List<Funcionario> funcionarios = new ArrayList<>();
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (sql.contains("LIMIT")) {
+                ps.setInt(1, pageSize);
+                ps.setInt(2, (pageNumber - 1) * pageSize);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setCdFuncionario(rs.getInt("cd_funcionario"));
+                funcionario.setNmFuncionario(rs.getString("nm_funcionario"));
+                funcionarios.add(funcionario);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar funcionários", e);
+        }
+        return funcionarios;
+    }
+
     public int countTotalFuncionarios() {
         int totalRecords = 0;
         try (Connection conn = Conexao.getConnection();
@@ -97,7 +88,7 @@ public class FuncionarioDAO {
                 totalRecords = rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao contar total de funcionários", e);
         }
         return totalRecords;
     }
