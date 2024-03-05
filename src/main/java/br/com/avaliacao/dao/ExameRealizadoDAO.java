@@ -119,6 +119,35 @@ public class ExameRealizadoDAO {
         }
     }
     
+    public List<ExameRealizado> listarExamesRealizadosPorPeriodo(Date dtInicial, Date dtFinal) {
+        List<ExameRealizado> examesRealizados = new ArrayList<>();
+        String sql = "SELECT exame_realizado.*, exame.nm_exame, funcionario.nm_funcionario " +
+                     "FROM exame_realizado " +
+                     "JOIN exame ON exame_realizado.cd_exame = exame.cd_exame " +
+                     "JOIN funcionario ON exame_realizado.cd_funcionario = funcionario.cd_funcionario " +
+                     "WHERE exame_realizado.dt_realizacao BETWEEN ? AND ?";
+
+        try {
+            Connection conn = Conexao.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, dtInicial);
+            stmt.setDate(2, dtFinal);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ExameRealizado exameRealizado = new ExameRealizado();
+                exameRealizado.setCdFuncionario(rs.getInt("cd_funcionario"));
+                exameRealizado.setCdExame(rs.getInt("cd_exame"));
+                exameRealizado.setNmExame(rs.getString("nm_exame"));
+                exameRealizado.setDtRealizacao(rs.getDate("dt_realizacao"));
+                exameRealizado.setNmFuncionario(rs.getString("nm_funcionario"));
+                examesRealizados.add(exameRealizado);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return examesRealizados;
+    }
+    
     public int countTotalExamesRealizados() {
         int totalRecords = 0;
         try (Connection conn = Conexao.getConnection();

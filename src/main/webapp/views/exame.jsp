@@ -23,7 +23,7 @@
 
     <div
         class="d-flex align-items-center justify-content-center full-height">
-        <div class="card" style="width: 50rem;">
+        <div class="card" style="width: 70rem;">
             <div class="card-header text-center">
                 <h2>Lista de exames</h2>
                 <form method="GET" action="<s:url action='listarExames' namespace='/'></s:url>">

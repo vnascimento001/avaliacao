@@ -80,6 +80,12 @@
         <action name="deletarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="deletarExameRealizado">
             <result name="success" type="redirectAction">exameRealizado</result>
 		</action>
+		<action name="relatorio" class="br.com.avaliacao.action.ExameRealizadoAction" method="relatorio">
+            <result name="success" >/views/exameRealizado/relatorio.jsp</result>
+		</action>
+		<action name="gerarRelatorio" class="br.com.avaliacao.action.ExameRealizadoAction" method="gerarRelatorio">
+            <result name="success" >/views/exameRealizado/relatorioResultado.jsp</result>
+		</action>
 		
 		
 

@@ -19,11 +19,13 @@
     <div class="d-flex justify-content-end">
         <a href="<s:url action='adicionarExameRealizado' namespace='/'></s:url>"
             class="btn btn-primary mr-2">Realizar exame</a>
+         <a href="<s:url action='relatorio' namespace='/'></s:url>"
+            class="btn btn-primary mr-2">Relatório</a>
     </div>
 
     <div
         class="d-flex align-items-center justify-content-center full-height">
-        <div class="card" style="width: 50rem;">
+        <div class="card" style="width: 60rem;">
             <div class="card-header text-center">
                 <h2>Lista de exames realizados</h2>
                 <form method="GET" action="<s:url action='listarExamesRealizados' namespace='/'></s:url>">

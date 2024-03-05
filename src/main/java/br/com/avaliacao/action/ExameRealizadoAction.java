@@ -1,6 +1,8 @@
 package br.com.avaliacao.action;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -13,6 +15,7 @@ import br.com.avaliacao.exception.RegraNegocioException;
 import br.com.avaliacao.model.Exame;
 import br.com.avaliacao.model.ExameRealizado;
 import br.com.avaliacao.model.Funcionario;
+
 
 public class ExameRealizadoAction extends ActionSupport {
 	
@@ -27,6 +30,8 @@ public class ExameRealizadoAction extends ActionSupport {
     private String nmExame;
     private int pageNumber;
     private int pageSize = 10;
+    private Date dtFinal;
+    private Date dtInicial;
     
 	public String examesRealizados() {
 		return SUCCESS;
@@ -107,6 +112,19 @@ public class ExameRealizadoAction extends ActionSupport {
         exameRealizadoDAO.deletarExameRealizado(cdFuncionario, cdExame);
 		return SUCCESS;
 	}
+	
+	public String relatorio() {
+		return SUCCESS;
+	}
+	
+	public String gerarRelatorio() {
+	    ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
+	    examesRealizados = exameRealizadoDAO.listarExamesRealizadosPorPeriodo(dtInicial, dtFinal);
+
+	    ActionContext.getContext().put("examesRealizados", examesRealizados);
+	    return SUCCESS;
+	}
+	
     public List<ExameRealizado> getExamesRealizados() {
         return examesRealizados;
     }
@@ -169,6 +187,22 @@ public class ExameRealizadoAction extends ActionSupport {
 
 	public void setNmExame(String nmExame) {
 		this.nmExame = nmExame;
+	}
+
+	public Date getDtFinal() {
+		return dtFinal;
+	}
+
+	public void setDtFinal(String dtFinal) {
+		this.dtFinal = Date.valueOf(dtFinal);
+	}
+
+	public Date getDtInicial() {
+		return dtInicial;
+	}
+
+	public void setDtInicial(String dtInicial) {
+		this.dtInicial = Date.valueOf(dtInicial);
 	}
 
 }

@@ -23,7 +23,7 @@
 
 	<div
 		class="d-flex align-items-center justify-content-center full-height">
-		<div class="card" style="width: 25rem;">
+		<div class="card" style="width: 30rem;">
 			<div class="card-header text-center">
 				<h2>Lista de funcionários</h2>
 			</div>
