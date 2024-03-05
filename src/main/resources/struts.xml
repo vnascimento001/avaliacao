@@ -8,108 +8,160 @@
 	<constant name="struts.devMode" value="true" />
 
 	<package name="default" namespace="/" extends="struts-default">
-	
+
 		<global-results>
-		    <result name="error">/views/error.jsp</result>
+			<result name="error">/views/error.jsp</result>
 		</global-results>
-		
+
 		<global-exception-mappings>
-		    <exception-mapping exception="java.lang.Exception" result="error" />
-		    <exception-mapping exception="br.com.avaliacao.exception.RegraNegocioException" result="error" />
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+			<exception-mapping
+				exception="br.com.avaliacao.exception.RegraNegocioException"
+				result="error" />
 		</global-exception-mappings>
+		
 		<action name="login"
 			class="br.com.avaliacao.action.UsuarioAction">
 			<result name="success" type="redirectAction">home</result>
 			<result name="input">/views/login.jsp</result>
+			<result name="login" type="redirectAction">
+    			<param name="actionName">login</param>
+			</result>
 		</action>
-		
-		<action name="home" class="br.com.avaliacao.action.UsuarioAction" method="isLogado">
+
+		<action name="home"
+			class="br.com.avaliacao.action.IndexAction">
 			<result name="success">/views/home.jsp</result>
-			<result name="input">/views/login.jsp</result>
 		</action>
-		
-		<action name="logout" class="br.com.avaliacao.action.UsuarioAction" method="logout">
+
+		<action name="logout"
+			class="br.com.avaliacao.action.UsuarioAction" method="logout">
 			<result name="success" type="redirectAction">login</result>
 		</action>
 
-		<action name="exame" class="br.com.avaliacao.action.ExameAction" method="exames">
+		<action name="exame"
+			class="br.com.avaliacao.action.ExameAction" method="exames">
 			<result name="success" type="redirectAction">listarExames</result>
+			<result name="login">/views/login.jsp</result>
 		</action>
-		<action name="listarExames" class="br.com.avaliacao.action.ExameAction" method="listarExames">
+		<action name="listarExames"
+			class="br.com.avaliacao.action.ExameAction" method="listarExames">
 			<result name="success">/views/exame.jsp</result>
 		</action>
-		<action name="adicionarExame" class="br.com.avaliacao.action.ExameAction" method="adicionarExame">
+		<action name="adicionarExame"
+			class="br.com.avaliacao.action.ExameAction" method="adicionarExame">
 			<result name="success">/views/exame/adicionarExame.jsp</result>
 		</action>
-        <action name="salvarExame" class="br.com.avaliacao.action.ExameAction" method="salvarExame">
-            <result name="success" type="redirectAction">exame</result>
-            <result name="error" type="redirectAction">exame</result>
-        </action>
-		<action name="editarExame" class="br.com.avaliacao.action.ExameAction" method="editarExame">
+		<action name="salvarExame"
+			class="br.com.avaliacao.action.ExameAction" method="salvarExame">
+			<result name="success" type="redirectAction">exame</result>
+			<result name="error" type="redirectAction">exame</result>
+		</action>
+		<action name="editarExame"
+			class="br.com.avaliacao.action.ExameAction" method="editarExame">
 			<result name="success">/views/exame/editarExame.jsp</result>
 		</action>
-        <action name="atualizarExame" class="br.com.avaliacao.action.ExameAction" method="atualizarExame">
-             <result name="success" type="redirectAction">exame</result>
-             <result name="input" type="redirectAction">exame</result>
-        </action>
-        <action name="deletarExame" class="br.com.avaliacao.action.ExameAction" method="deletarExame">
-            <result name="success" type="redirectAction">exame</result>
+		<action name="atualizarExame"
+			class="br.com.avaliacao.action.ExameAction" method="atualizarExame">
+			<result name="success" type="redirectAction">exame</result>
+			<result name="input" type="redirectAction">exame</result>
 		</action>
-		
-		
-		
-		<action name="exameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="examesRealizados">
+		<action name="deletarExame"
+			class="br.com.avaliacao.action.ExameAction" method="deletarExame">
+			<result name="success" type="redirectAction">exame</result>
+		</action>
+
+
+
+		<action name="exameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="examesRealizados">
 			<result name="success" type="redirectAction">listarExamesRealizados</result>
 		</action>
-		<action name="listarExamesRealizados" class="br.com.avaliacao.action.ExameRealizadoAction" method="listarExamesRealizados">
+		<action name="listarExamesRealizados"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="listarExamesRealizados">
 			<result name="success">/views/exameRealizado.jsp</result>
 		</action>
-		<action name="adicionarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="adicionarExameRealizado">
-			<result name="success">/views/exameRealizado/adicionarExameRealizado.jsp</result>
+		<action name="adicionarExameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="adicionarExameRealizado">
+			<result name="success">/views/exameRealizado/adicionarExameRealizado.jsp
+			</result>
 		</action>
-        <action name="salvarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="salvarExameRealizado">
-            <result name="success" type="redirectAction">exameRealizado</result>
-        </action>
-		<action name="editarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="editarExameRealizado">
-			<result name="success">/views/exameRealizado/editarExameRealizado.jsp</result>
+		<action name="salvarExameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="salvarExameRealizado">
+			<result name="success" type="redirectAction">exameRealizado</result>
 		</action>
-        <action name="atualizarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="atualizarExameRealizado">
-             <result name="success" type="redirectAction">exameRealizado</result>
-             <result name="input" type="redirectAction">exameRealizado</result>
-        </action>
-        <action name="deletarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="deletarExameRealizado">
-            <result name="success" type="redirectAction">exameRealizado</result>
+		<action name="editarExameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="editarExameRealizado">
+			<result name="success">/views/exameRealizado/editarExameRealizado.jsp
+			</result>
 		</action>
-		<action name="relatorio" class="br.com.avaliacao.action.ExameRealizadoAction" method="relatorio">
-            <result name="success" >/views/exameRealizado/relatorio.jsp</result>
+		<action name="atualizarExameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="atualizarExameRealizado">
+			<result name="success" type="redirectAction">exameRealizado</result>
+			<result name="input" type="redirectAction">exameRealizado</result>
 		</action>
-		<action name="gerarRelatorio" class="br.com.avaliacao.action.ExameRealizadoAction" method="gerarRelatorio">
-            <result name="success" >/views/exameRealizado/relatorioResultado.jsp</result>
+		<action name="deletarExameRealizado"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="deletarExameRealizado">
+			<result name="success" type="redirectAction">exameRealizado</result>
 		</action>
-		
-		
+		<action name="relatorio"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="relatorio">
+			<result name="success">/views/exameRealizado/relatorio.jsp
+			</result>
+		</action>
+		<action name="gerarRelatorio"
+			class="br.com.avaliacao.action.ExameRealizadoAction"
+			method="gerarRelatorio">
+			<result name="success">/views/exameRealizado/relatorioResultado.jsp
+			</result>
+		</action>
 
-		<action name="funcionario" class="br.com.avaliacao.action.FuncionarioAction" method="listarFuncionarios">
+
+
+		<action name="funcionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="listarFuncionarios">
 			<result name="success">/views/funcionario.jsp</result>
+			<result name="login" type="redirectAction">login</result>
 		</action>
-        <action name="adicionarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="adicionarFuncionario">
-            <result name="success">/views/funcionario/adicionarFuncionario.jsp</result>
-        </action>
-        <action name="salvarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="salvarFuncionario">
-            <result name="success" type="redirectAction">funcionario</result>
-            <result name="error" type="redirectAction">funcionario</result>
-        </action>
-        <action name="editarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="editarFuncionario">
-            <result name="success">/views/funcionario/editarFuncionario.jsp</result>
-        </action>
-        <action name="atualizarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="atualizarFuncionario">
-             <result name="success" type="redirectAction">funcionario</result>
-             <result name="input" type="redirectAction">funcionario</result>
-        </action>
-        <action name="deletarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="deletarFuncionario">
-            <result name="success" type="redirectAction">funcionario</result>
+		<action name="adicionarFuncionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="adicionarFuncionario">
+			<result name="success">/views/funcionario/adicionarFuncionario.jsp
+			</result>
 		</action>
-		
-	
+		<action name="salvarFuncionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="salvarFuncionario">
+			<result name="success" type="redirectAction">funcionario</result>
+			<result name="error" type="redirectAction">funcionario</result>
+		</action>
+		<action name="editarFuncionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="editarFuncionario">
+			<result name="success">/views/funcionario/editarFuncionario.jsp</result>
+		</action>
+		<action name="atualizarFuncionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="atualizarFuncionario">
+			<result name="success" type="redirectAction">funcionario</result>
+			<result name="input" type="redirectAction">funcionario</result>
+		</action>
+		<action name="deletarFuncionario"
+			class="br.com.avaliacao.action.FuncionarioAction"
+			method="deletarFuncionario">
+			<result name="success" type="redirectAction">funcionario</result>
+		</action>
+
+
 	</package>
 </struts>

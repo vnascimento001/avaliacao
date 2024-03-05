@@ -48,7 +48,8 @@
 				</div>
 				<div class="d-flex justify-content-center">
 				<a href="<s:url action='relatorio' namespace='/'></s:url>"
-            	class="btn btn-primary mr-2">Relatório</a>
+            	class="btn btn-primary me-2">Novo Relatório</a>
+            	<a href="<s:url action='exameRealizado' namespace='/'></s:url>" class="btn btn-secondary">Exames</a>
             	</div>
 			</div>
 		</div>

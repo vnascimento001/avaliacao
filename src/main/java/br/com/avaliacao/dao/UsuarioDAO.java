@@ -46,7 +46,7 @@ public class UsuarioDAO {
     }
 
     public Usuario consultarUsuarioPorLogin(String login) {
-        String sql = "SELECT * FROM usuario WHERE nm_login = ?";
+        String sql = "SELECT nm_login, ds_senha, qt_tempo_inatividade FROM usuario WHERE nm_login = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, login);
             ResultSet rs = stmt.executeQuery();

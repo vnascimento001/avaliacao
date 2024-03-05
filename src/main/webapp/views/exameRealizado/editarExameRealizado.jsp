@@ -45,7 +45,8 @@
 						 <span class="validity"></span>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Atualizar exame</button>
+                        <button type="submit" class="btn btn-primary me-2">Atualizar exame</button>
+                        <a href="<s:url action='exameRealizado' namespace='/'></s:url>" class="btn btn-secondary">Voltar</a>
                     </div>
                 </s:form>
             </div>

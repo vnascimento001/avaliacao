@@ -66,9 +66,15 @@
 									<td class="text-truncate" style="max-width: 150px;"><s:property value="dsDetalheExame1" /></td>
                                     <td><a
                                         href="<s:url action='editarExame' namespace='/'><s:param name="cdExame" value="cdExame"/><s:param name="nmExame" value="nmExame"/></s:url>"
-                                        class="btn btn-primary mr-2">Editar</a> <a
-                                        href="<s:url action='deletarExame' namespace='/'><s:param name="cdExame" value="cdExame"/></s:url>"
-                                        class="btn btn-primary">Deletar</a></td>
+                                        class="btn btn-primary mr-2">Editar</a> <s:url id="deleteUrl"
+											action="deletarExame" namespace="/">
+											<s:param name="cdExame" value="cdExame"/>
+										</s:url> <s:a href="%{deleteUrl}"
+											onclick="return confirm('Você realmente quer deletar este exame?');"
+											class="btn btn-primary">
+											<s:text name="Deletar" />
+										</s:a></td>
+                                        
                                 </tr>
                             </s:iterator>
                         </tbody>

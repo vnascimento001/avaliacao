@@ -27,7 +27,8 @@
                         <input type="text" class="form-control" id="nmFuncionario" name="nmFuncionario" value=''>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                        <button type="submit" class="btn btn-primary me-2">Adicionar</button>
+                        <a href="<s:url action='funcionario' namespace='/'></s:url>" class="btn btn-secondary">Voltar</a>
                     </div>
                 </s:form>
             </div>

@@ -35,7 +35,8 @@
 						
 					</div>
 					<div class="d-flex justify-content-center">
-						<button type="submit" class="btn btn-primary">Gerar relatório</button>
+						<button type="submit" class="btn btn-primary me-2">Gerar relatório</button>
+						<a href="<s:url action='exameRealizado' namespace='/'></s:url>" class="btn btn-secondary">Voltar</a>
 					</div>
 				</s:form>
 			</div>

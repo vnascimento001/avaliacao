@@ -40,7 +40,8 @@
                         <input type="text" class="form-control" id="dsDetalheExame1" name="dsDetalheExame1" value='' required>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                        <button type="submit" class="btn btn-primary me-2">Atualizar</button>
+                        <a href="<s:url action='exame' namespace='/'></s:url>" class="btn btn-secondary">Voltar</a>
                     </div>
                 </s:form>
             </div>

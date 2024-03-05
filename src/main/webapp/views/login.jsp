@@ -22,7 +22,7 @@
 				<h2>Login</h2>
 			</div>
 			<div class="card-body">
-				<form action="">
+				<form action="" method="post">
 					<div class="form-group">
 						<label for="login">Login:</label> <input type="text" id="login"
 							name="login" class="form-control" required>

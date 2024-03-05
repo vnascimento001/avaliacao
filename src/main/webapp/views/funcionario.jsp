@@ -4,8 +4,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="styles/background.css">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>Lista de Funcionários</title>
 <style>
 .full-height {
@@ -15,7 +14,6 @@
 </head>
 <body>
 	<%@include file="../menu/menu.jsp"%>
-
 	<div class="d-flex justify-content-end">
 		<a href="<s:url action='adicionarFuncionario' namespace='/'></s:url>"
 			class="btn btn-primary mr-2">Adicionar Funcionário</a>
@@ -43,9 +41,13 @@
 								<td><s:property value="nmFuncionario" /></td>
 								<td><a
 									href="<s:url action='editarFuncionario' namespace='/'><s:param name="cdFuncionario" value="cdFuncionario"/><s:param name="nmFuncionario" value="nmFuncionario"/></s:url>"
-									class="btn btn-primary mr-2">Editar</a> <a
-									href="<s:url action='deletarFuncionario' namespace='/'><s:param name="cdFuncionario" value="cdFuncionario"/></s:url>"
-									class="btn btn-primary">Deletar</a></td>
+									class="btn btn-primary mr-2">Editar</a> 
+									<s:url id="deleteUrl" action="deletarFuncionario" namespace="/">
+									<s:param name="cdFuncionario" value="cdFuncionario" />
+									</s:url>
+									<s:a href="%{deleteUrl}" onclick="return confirm('Você realmente quer deletar este funcionario?');" class="btn btn-primary">
+									<s:text name="Deletar" />
+									</s:a>
 							</tr>
 						</s:iterator>
 					</tbody>

@@ -1,38 +1,39 @@
 package br.com.avaliacao.action;
 
 import java.util.List;
-
+import java.util.Map;
+import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
-import br.com.avaliacao.dao.FuncionarioDAO;
 import br.com.avaliacao.model.Funcionario;
+import br.com.avaliacao.session.FuncionarioSession;
 import jakarta.ejb.EJB;
 
 @EJB
-public class FuncionarioAction extends ActionSupport {
+public class FuncionarioAction extends ActionSupport implements SessionAware{
     private List<Funcionario> funcionarios;
     private int pageNumber;
     private int pageSize = 10;
     private String nmFuncionario;
     private int cdFuncionario;
+    private Map<String, Object> session;
 
-    private FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-
-    public FuncionarioAction() {
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
     }
-
-    public FuncionarioAction(FuncionarioDAO funcionarioDAO) {
-        this.funcionarioDAO = funcionarioDAO;
-    }
+    private FuncionarioSession funcionarioSession = new FuncionarioSession();
 
     public String listarFuncionarios() {
-        if (pageNumber <= 0) {
-            pageNumber = 1;
-        }
-        funcionarios = funcionarioDAO.listarFuncionarios(pageNumber, pageSize);
-        calcularPaginas();
-        return SUCCESS;
+    	 if (session.get("usuarioLogado") == null) {
+    		 return LOGIN;
+    	 }
+	        if (pageNumber <= 0) {
+	            pageNumber = 1;
+	        }
+	        funcionarios = funcionarioSession.listarFuncionarios(pageNumber, pageSize);
+	        calcularPaginas();
+	        return SUCCESS;    	
     }
 
     public String adicionarFuncionario() {
@@ -40,10 +41,13 @@ public class FuncionarioAction extends ActionSupport {
     }
 
     public String salvarFuncionario() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
         if (validarNomeFuncionario()) {
             Funcionario funcionario = new Funcionario();
             funcionario.setNmFuncionario(nmFuncionario);
-            funcionarioDAO.inserirFuncionario(funcionario);
+            funcionarioSession.inserirFuncionario(funcionario);
             return SUCCESS;
         }
         return ERROR;
@@ -54,19 +58,25 @@ public class FuncionarioAction extends ActionSupport {
     }
 
     public String atualizarFuncionario() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
         if (validarNomeFuncionario()) {
             Funcionario funcionario = new Funcionario();
             funcionario.setCdFuncionario(cdFuncionario);
             funcionario.setNmFuncionario(nmFuncionario);
-            funcionarioDAO.atualizarFuncionario(funcionario);
+            funcionarioSession.atualizarFuncionario(funcionario);
             return SUCCESS;
         }
         return INPUT;
     }
 
     public String deletarFuncionario() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
         try {
-            funcionarioDAO.deletarFuncionario(cdFuncionario);
+            funcionarioSession.deletarFuncionario(cdFuncionario);
             return SUCCESS;
         } catch (Exception e) {
             return ERROR;
@@ -84,7 +94,7 @@ public class FuncionarioAction extends ActionSupport {
     }
     
     public int getTotalPages() {
-        int totalRecords = funcionarioDAO.countTotalFuncionarios();
+        int totalRecords = funcionarioSession.countTotalFuncionarios();
         return (int) Math.ceil((double) totalRecords / pageSize);
     }
     

@@ -1,8 +1,6 @@
 package br.com.avaliacao.action;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
