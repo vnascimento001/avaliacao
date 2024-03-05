@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-4">
                             <select class="form-control" name="icAtivo">
-                                <option value="">Selecione o status</option>
+                            	<option value="" selected>Selecione o status</option>
                                 <option value="1" ${icAtivo == 1 ? 'selected' : ''}>Ativo</option>
                                 <option value="0" ${icAtivo == 0 ? 'selected' : ''}>Inativo</option>
                                 <option value="" ${icAtivo == null ? 'selected' : ''}>Ambos</option>
@@ -62,8 +62,8 @@
                                 <tr>
                                     <td><s:property value="cdExame" /></td>
                                     <td><s:property value="nmExame" /></td>
-                                    <td><s:property value="dsDetalheExame" /></td>
-                                    <td><s:property value="dsDetalheExame1" /></td>
+									<td class="text-truncate" style="max-width: 150px;"><s:property value="dsDetalheExame" /></td>
+									<td class="text-truncate" style="max-width: 150px;"><s:property value="dsDetalheExame1" /></td>
                                     <td><a
                                         href="<s:url action='editarExame' namespace='/'><s:param name="cdExame" value="cdExame"/><s:param name="nmExame" value="nmExame"/></s:url>"
                                         class="btn btn-primary mr-2">Editar</a> <a

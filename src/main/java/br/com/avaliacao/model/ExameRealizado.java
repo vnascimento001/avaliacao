@@ -1,9 +1,13 @@
 package br.com.avaliacao.model;
 
+import java.sql.Date;
+
 public class ExameRealizado {
     private int cdFuncionario;
+    private String nmFuncionario;
+    private String nmExame;
     private int cdExame;
-    private String dtRealizacao;
+    private Date dtRealizacao;
     
 	public int getCdFuncionario() {
 		return cdFuncionario;
@@ -17,11 +21,23 @@ public class ExameRealizado {
 	public void setCdExame(int cdExame) {
 		this.cdExame = cdExame;
 	}
-	public String getDtRealizacao() {
+	public Date getDtRealizacao() {
 		return dtRealizacao;
 	}
-	public void setDtRealizacao(String dtRealizacao) {
+	public void setDtRealizacao(Date dtRealizacao) {
 		this.dtRealizacao = dtRealizacao;
+	}
+	public String getNmFuncionario() {
+		return nmFuncionario;
+	}
+	public void setNmFuncionario(String nmFuncionario) {
+		this.nmFuncionario = nmFuncionario;
+	}
+	public String getNmExame() {
+		return nmExame;
+	}
+	public void setNmExame(String nmExame) {
+		this.nmExame = nmExame;
 	}
 
 

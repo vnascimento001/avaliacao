@@ -10,10 +10,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import br.com.avaliacao.dao.ExameDAO;
-import br.com.avaliacao.dao.FuncionarioDAO;
-import br.com.avaliacao.dao.sharedDAO;
+import br.com.avaliacao.exception.RegraNegocioException;
 import br.com.avaliacao.model.Exame;
-import br.com.avaliacao.model.Funcionario;
 
 public class ExameAction extends ActionSupport {
 
@@ -40,7 +38,6 @@ public class ExameAction extends ActionSupport {
 	        ExameDAO exameDAO = new ExameDAO();
 	        // Aplicar filtro de ativo
 	        String icAtivoStr = ServletActionContext.getRequest().getParameter("icAtivo");
-	        Integer icAtivo = null;
 	        if (icAtivoStr != null && !icAtivoStr.isEmpty()) {
 	            icAtivo = Integer.parseInt(icAtivoStr);
 	        }
@@ -112,6 +109,15 @@ public class ExameAction extends ActionSupport {
 
 	}
 
+	public String deletarExame() {
+	    ExameDAO exameDAO = new ExameDAO();
+	    if (exameDAO.exameFoiRealizado(cdExame)) {
+	        throw new RegraNegocioException("Não é possível deletar um exame que foi realizado por um ou mais funcionários.");
+	    } else {
+	        exameDAO.deletarExame(cdExame);
+	        return SUCCESS;
+	    }
+	}
 	public int getTotalPages() {
 		ExameDAO exameDAO = new ExameDAO();
 	    int totalRecords = exameDAO.countTotalExames(icAtivo, nmExame);

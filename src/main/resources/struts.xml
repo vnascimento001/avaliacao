@@ -8,6 +8,15 @@
 	<constant name="struts.devMode" value="true" />
 
 	<package name="default" namespace="/" extends="struts-default">
+	
+		<global-results>
+		    <result name="error">/views/error.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+		    <exception-mapping exception="java.lang.Exception" result="error" />
+		    <exception-mapping exception="br.com.avaliacao.exception.RegraNegocioException" result="error" />
+		</global-exception-mappings>
 		<action name="login"
 			class="br.com.avaliacao.action.UsuarioAction">
 			<result name="success" type="redirectAction">home</result>
@@ -24,7 +33,7 @@
 		</action>
 
 		<action name="exame" class="br.com.avaliacao.action.ExameAction" method="exames">
-			<result name="success">/views/exame.jsp</result>
+			<result name="success" type="redirectAction">listarExames</result>
 		</action>
 		<action name="listarExames" class="br.com.avaliacao.action.ExameAction" method="listarExames">
 			<result name="success">/views/exame.jsp</result>
@@ -44,8 +53,35 @@
              <result name="input" type="redirectAction">exame</result>
         </action>
         <action name="deletarExame" class="br.com.avaliacao.action.ExameAction" method="deletarExame">
-            <result name="success" type="redirectAction">funcionario</result>
+            <result name="success" type="redirectAction">exame</result>
 		</action>
+		
+		
+		
+		<action name="exameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="examesRealizados">
+			<result name="success" type="redirectAction">listarExamesRealizados</result>
+		</action>
+		<action name="listarExamesRealizados" class="br.com.avaliacao.action.ExameRealizadoAction" method="listarExamesRealizados">
+			<result name="success">/views/exameRealizado.jsp</result>
+		</action>
+		<action name="adicionarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="adicionarExameRealizado">
+			<result name="success">/views/exameRealizado/adicionarExameRealizado.jsp</result>
+		</action>
+        <action name="salvarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="salvarExameRealizado">
+            <result name="success" type="redirectAction">exameRealizado</result>
+        </action>
+		<action name="editarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="editarExameRealizado">
+			<result name="success">/views/exameRealizado/editarExameRealizado.jsp</result>
+		</action>
+        <action name="atualizarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="atualizarExameRealizado">
+             <result name="success" type="redirectAction">exameRealizado</result>
+             <result name="input" type="redirectAction">exameRealizado</result>
+        </action>
+        <action name="deletarExameRealizado" class="br.com.avaliacao.action.ExameRealizadoAction" method="deletarExameRealizado">
+            <result name="success" type="redirectAction">exameRealizado</result>
+		</action>
+		
+		
 
 		<action name="funcionario" class="br.com.avaliacao.action.FuncionarioAction" method="listarFuncionarios">
 			<result name="success">/views/funcionario.jsp</result>
@@ -67,5 +103,7 @@
         <action name="deletarFuncionario" class="br.com.avaliacao.action.FuncionarioAction" method="deletarFuncionario">
             <result name="success" type="redirectAction">funcionario</result>
 		</action>
+		
+	
 	</package>
 </struts>

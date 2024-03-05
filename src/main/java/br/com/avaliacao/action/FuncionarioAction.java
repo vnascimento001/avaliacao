@@ -7,7 +7,9 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import br.com.avaliacao.dao.FuncionarioDAO;
 import br.com.avaliacao.model.Funcionario;
+import jakarta.ejb.EJB;
 
+@EJB
 public class FuncionarioAction extends ActionSupport {
 	    private List<Funcionario> funcionarios;
 	    private int pageNumber;
@@ -112,11 +114,11 @@ public class FuncionarioAction extends ActionSupport {
 	        this.pageSize = pageSize;
 	    }
 	    
-	    public int getPageNumber(int pageNumber) {
+	    public int getPageNumber() {
 	        return pageNumber;
 	    }
 
-	    public int getPageSize(int pageSize) {
+	    public int getPageSize() {
 	        return pageSize;
 	    }  
 

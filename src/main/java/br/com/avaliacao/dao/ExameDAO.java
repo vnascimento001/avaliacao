@@ -102,25 +102,26 @@ public class ExameDAO {
     }
 
     // Método para buscar um exame por código
-    public Exame buscarExamePorCodigo(int cdExame) {
+    public List<Exame> buscarExamesAtivos() {
+    	List<Exame> exames = new ArrayList<>();
         Exame exame = null;
-        String sql = "SELECT * FROM exame WHERE cd_exame = ?";
+        String sql = "SELECT cd_exame, nm_exame, ic_ativo, ds_detalhe_exame, ds_detalhe_exame1 FROM exame where ic_ativo = 1";
         try (Connection conn = Conexao.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, cdExame);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 exame = new Exame();
                 exame.setCdExame(rs.getInt("cd_exame"));
                 exame.setNmExame(rs.getString("nm_exame"));
                 exame.setIcAtivo(rs.getInt("ic_ativo"));
                 exame.setDsDetalheExame(rs.getString("ds_detalhe_exame"));
                 exame.setDsDetalheExame1(rs.getString("ds_detalhe_exame1"));
+                exames.add(exame);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return exame;
+        return exames;
     }
     
     public int countTotalExames(Integer icAtivo, String nmExame) {
@@ -159,5 +160,20 @@ public class ExameDAO {
             e.printStackTrace();
         }
         return totalRecords;
+    }
+    
+    public boolean exameFoiRealizado(int cdExame) {
+        String sql = "SELECT COUNT(*) FROM exame_realizado WHERE cd_exame = ?";
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, cdExame);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

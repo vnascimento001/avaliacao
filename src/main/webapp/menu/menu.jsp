@@ -21,7 +21,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><s:a action="funcionario" namespace="/" class="nav-link">Funcionários</s:a></li>
 					<li class="nav-item"><s:a action="exame" namespace="/" class="nav-link">Exames</s:a></li>
-                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Exames Realizados</a></li>
+                    <li class="nav-item"><s:a action="exameRealizado" namespace="/" class="nav-link">Exames Realizados</s:a></li>
                 </ul>
                 <form class="d-flex">
                     <s:if test="#session.usuarioLogado != null">
