@@ -28,12 +28,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-junit-plugin</artifactId>
-			<version>${struts2.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 		    <groupId>org.apache.struts</groupId>
 		    <artifactId>struts2-convention-plugin</artifactId>
 		    <version>${struts2.version}</version>
@@ -42,27 +36,6 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>2.0.8</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>2.5</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -87,12 +60,6 @@
 
 		<dependency>
 			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>2.1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>3.2.0</version>
 			<exclusions>
@@ -104,29 +71,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-runner</artifactId>
-			<version>1.2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-json-plugin</artifactId>
-			<version>2.3.33</version> 
-		</dependency>
-		
-		<dependency>
 		    <groupId>jakarta.ejb</groupId>
 		    <artifactId>jakarta.ejb-api</artifactId>
 		    <version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.3.2</version>
 		</dependency>
 	</dependencies>
 
