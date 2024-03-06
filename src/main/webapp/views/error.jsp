@@ -24,7 +24,7 @@
 				<h2>Ocorreu um erro:</h2>
 			</div>
 			<div class="card-body">
-				<p><s:property value="exception"/></p>
+				<p><s:actionerror/></p>
 			</div>
 		</div>
 	</div>

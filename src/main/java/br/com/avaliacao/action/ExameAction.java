@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
-import br.com.avaliacao.dao.ExameDAO;
 import br.com.avaliacao.exception.RegraNegocioException;
 import br.com.avaliacao.model.Exame;
+import br.com.avaliacao.session.ExameSession;
 
-public class ExameAction extends ActionSupport {
+public class ExameAction extends ActionSupport implements SessionAware{
 
 	private List<Exame> exames;
 
@@ -25,17 +25,33 @@ public class ExameAction extends ActionSupport {
 
 	private int pageNumber;
 	private int pageSize = 10;
+    private Map<String, Object> session;
 
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
+    
+    private ExameSession exameSession;
+    
+    public ExameAction() {
+        this.exameSession = new ExameSession();
+        
+    }
 	public String exames() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
 		return SUCCESS;
 	}
-	
+
+    
 	public String listarExames() {
 	    try {
 	        if (pageNumber <= 0) {
 	            pageNumber = 1;
 	        }
-	        ExameDAO exameDAO = new ExameDAO();
+	        exames = exameSession.listarExames(pageNumber, pageSize, icAtivo, nmExame);
 	        // Aplicar filtro de ativo
 	        String icAtivoStr = ServletActionContext.getRequest().getParameter("icAtivo");
 	        if (icAtivoStr != null && !icAtivoStr.isEmpty()) {
@@ -43,7 +59,7 @@ public class ExameAction extends ActionSupport {
 	        }
 	        // Aplicar filtro de nome
 	        String nmExame = ServletActionContext.getRequest().getParameter("nmExame");
-	        exames = exameDAO.listarExames(pageNumber, pageSize, icAtivo, nmExame);
+	        exames = exameSession.listarExames(pageNumber, pageSize, icAtivo, nmExame);
 
 	        // Armazenar parâmetros de filtro no contexto da ação
 	        ActionContext.getContext().put("nmExame", nmExame);
@@ -67,6 +83,9 @@ public class ExameAction extends ActionSupport {
 	}
 
 	public String adicionarExame() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
 		return SUCCESS;
 	}
 
@@ -74,14 +93,12 @@ public class ExameAction extends ActionSupport {
 		try {
 			String valorSelecionado = ServletActionContext.getRequest().getParameter("icAtivo");
 			icAtivo = Integer.parseInt(valorSelecionado);
-
-			ExameDAO exameDAO = new ExameDAO();
 			Exame exame = new Exame();
 			exame.setNmExame(nmExame);
 			exame.setIcAtivo(icAtivo);
 			exame.setDsDetalheExame(dsDetalheExame);
 			exame.setDsDetalheExame1(dsDetalheExame1);
-			exameDAO.inserirExame(exame);
+			exameSession.inserirExame(exame);
 			return SUCCESS;
 		} catch (Exception e) {
 			return ERROR;
@@ -89,19 +106,21 @@ public class ExameAction extends ActionSupport {
 	}
 
 	public String editarExame() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
 		return SUCCESS;
 	}
 
 	public String atualizarExame() {
 		try {
-			ExameDAO exameDAO = new ExameDAO();
 			Exame exame = new Exame();
 			exame.setNmExame(nmExame);
 			exame.setIcAtivo(icAtivo);
 			exame.setDsDetalheExame(dsDetalheExame);
 			exame.setDsDetalheExame1(dsDetalheExame1);
 			exame.setCdExame(cdExame);
-			exameDAO.atualizarExame(exame);
+			exameSession.atualizarExame(exame);
 			return SUCCESS;
 		} catch (Exception e) {
 			return ERROR;
@@ -110,17 +129,18 @@ public class ExameAction extends ActionSupport {
 	}
 
 	public String deletarExame() {
-	    ExameDAO exameDAO = new ExameDAO();
-	    if (exameDAO.exameFoiRealizado(cdExame)) {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+	    if (exameSession.exameFoiRealizado(cdExame)) {
 	        throw new RegraNegocioException("Não é possível deletar um exame que foi realizado por um ou mais funcionários.");
 	    } else {
-	        exameDAO.deletarExame(cdExame);
+	    	exameSession.deletarExame(cdExame);
 	        return SUCCESS;
 	    }
 	}
 	public int getTotalPages() {
-		ExameDAO exameDAO = new ExameDAO();
-	    int totalRecords = exameDAO.countTotalExames(icAtivo, nmExame);
+	    int totalRecords = exameSession.countTotalExames(icAtivo, nmExame);
 	    return (int) Math.ceil((double) totalRecords / pageSize);
 	}
 	public List<Exame> getExames() {

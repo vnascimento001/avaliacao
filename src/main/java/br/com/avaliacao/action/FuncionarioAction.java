@@ -25,9 +25,9 @@ public class FuncionarioAction extends ActionSupport implements SessionAware{
     private FuncionarioSession funcionarioSession = new FuncionarioSession();
 
     public String listarFuncionarios() {
-    	 if (session.get("usuarioLogado") == null) {
-    		 return LOGIN;
-    	 }
+		   	 if (session.get("usuarioLogado") == null) {
+				 return LOGIN;
+			 }
 	        if (pageNumber <= 0) {
 	            pageNumber = 1;
 	        }
@@ -37,6 +37,9 @@ public class FuncionarioAction extends ActionSupport implements SessionAware{
     }
 
     public String adicionarFuncionario() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
         return SUCCESS;
     }
 
@@ -54,6 +57,9 @@ public class FuncionarioAction extends ActionSupport implements SessionAware{
     }
 
     public String editarFuncionario() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
         return SUCCESS;
     }
 

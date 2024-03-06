@@ -2,27 +2,26 @@ package br.com.avaliacao.action;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
-import br.com.avaliacao.dao.ExameDAO;
-import br.com.avaliacao.dao.ExameRealizadoDAO;
-import br.com.avaliacao.dao.FuncionarioDAO;
 import br.com.avaliacao.exception.RegraNegocioException;
 import br.com.avaliacao.model.Exame;
 import br.com.avaliacao.model.ExameRealizado;
 import br.com.avaliacao.model.Funcionario;
+import br.com.avaliacao.session.ExameRealizadoSession;
 
+public class ExameRealizadoAction extends ActionSupport implements SessionAware{
 
-public class ExameRealizadoAction extends ActionSupport {
-	
-    private ExameRealizado exameRealizado;
+    private ExameRealizadoSession exameRealizadoSession;
     private List<ExameRealizado> examesRealizados;
-	private List<Exame> exames;
-	private List<Funcionario> funcionarios;
+    private List<Exame> exames;
+    private List<Funcionario> funcionarios;
     private int cdFuncionario;
-	private int cdExame;
+    private int cdExame;
     private Date dtRealizacao;
     private String nmFuncionario;
     private String nmExame;
@@ -31,97 +30,102 @@ public class ExameRealizadoAction extends ActionSupport {
     private Date dtFinal;
     private Date dtInicial;
     
-	public String examesRealizados() {
-		return SUCCESS;
-	}
-	
+    private Map<String, Object> session;
+
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
+
+    public ExameRealizadoAction() {
+        this.exameRealizadoSession = new ExameRealizadoSession();
+    }
+
+    public String examesRealizados() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+        return SUCCESS;
+    }
+
     public String listarExamesRealizados() {
         if (pageNumber <= 0) {
             pageNumber = 1;
         }
-        ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-        examesRealizados = exameRealizadoDAO.listarExamesRealizados(pageNumber, pageSize, cdFuncionario, cdExame);
-        
-        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.buscarFuncionariosAtivos();
-        ExameDAO exameDAO = new ExameDAO();
-        exames = exameDAO.buscarExamesAtivos();
+        examesRealizados = exameRealizadoSession.listarExamesRealizados(pageNumber, pageSize, cdFuncionario, cdExame);
+        funcionarios = exameRealizadoSession.buscarFuncionariosAtivos();
+        exames = exameRealizadoSession.buscarExamesAtivos();
         ActionContext.getContext().put("exames", exames);
         ActionContext.getContext().put("funcionarios", funcionarios);
-        
-        // Calcular previousPageNumber e nextPageNumber
         int previousPageNumber = Math.max(1, pageNumber - 1);
         int nextPageNumber = pageNumber + 1;
-        
-        // Verificar se a próxima página é válida
         if (nextPageNumber > getTotalPages()) {
-            nextPageNumber = getTotalPages(); // Redirecionar para a última página válida
+            nextPageNumber = getTotalPages();
         }
-        // Adicionar os valores calculados ao contexto do JSP
         ActionContext.getContext().put("previousPageNumber", previousPageNumber);
         ActionContext.getContext().put("nextPageNumber", nextPageNumber);
         return SUCCESS;
     }
-    
+
     public int getTotalPages() {
-    	ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-        int totalRecords = exameRealizadoDAO.countTotalExamesRealizados();
-        return (int) Math.ceil((double) totalRecords / pageSize);
+        return (int) Math.ceil((double) exameRealizadoSession.countTotalExamesRealizados() / pageSize);
     }
-    
-	public String adicionarExameRealizado() {
-        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-        funcionarios = funcionarioDAO.buscarFuncionariosAtivos();
-        ExameDAO exameDAO = new ExameDAO();
-        exames = exameDAO.buscarExamesAtivos();
+
+    public String adicionarExameRealizado() {
+        funcionarios = exameRealizadoSession.buscarFuncionariosAtivos();
+        exames = exameRealizadoSession.buscarExamesAtivos();
         ActionContext.getContext().put("exames", exames);
         ActionContext.getContext().put("funcionarios", funcionarios);
-		return SUCCESS;
-	}
-	
-    public String salvarExameRealizado() throws RegraNegocioException {
-    	ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-    	
-    	if (exameRealizadoDAO.isExameRealizadoDuplicado(cdFuncionario, cdExame, dtRealizacao)){
-    		throw new RegraNegocioException("Este exame já foi realizado por este funcionário na data selecionada.");
-    	}
-    	exameRealizadoDAO.inserirExameRealizado(cdFuncionario, cdExame, dtRealizacao);
         return SUCCESS;
     }
-    
-	public String editarExameRealizado() {
-		adicionarExameRealizado();
-		return SUCCESS;
-	}
 
-	public String atualizarExameRealizado() {
-		ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-		
-		ExameRealizado exame = new ExameRealizado();
-		exame.setCdFuncionario(cdFuncionario);
-		exame.setCdExame(cdExame);
-		exame.setDtRealizacao(dtRealizacao);
-		exameRealizadoDAO.atualizarExameRealizado(exame);
-		return SUCCESS;
-	}
-	
-	public String deletarExameRealizado() {
-        ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-        exameRealizadoDAO.deletarExameRealizado(cdFuncionario, cdExame);
-		return SUCCESS;
-	}
-	
-	public String relatorio() {
-		return SUCCESS;
-	}
-	
-	public String gerarRelatorio() {
-	    ExameRealizadoDAO exameRealizadoDAO = new ExameRealizadoDAO();
-	    examesRealizados = exameRealizadoDAO.listarExamesRealizadosPorPeriodo(dtInicial, dtFinal);
+    public String salvarExameRealizado() {
+        try {
+            exameRealizadoSession.inserirExameRealizado(cdFuncionario, cdExame, dtRealizacao);
+        } catch (RegraNegocioException e) {
+            addActionError(e.getMessage());
+            return ERROR;
+        }
+        return SUCCESS;
+    }
 
-	    ActionContext.getContext().put("examesRealizados", examesRealizados);
-	    return SUCCESS;
-	}
+    public String editarExameRealizado() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+        adicionarExameRealizado();
+        return SUCCESS;
+    }
+
+    public String atualizarExameRealizado() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+        exameRealizadoSession.atualizarExameRealizado(cdFuncionario, cdExame, dtRealizacao);
+        return SUCCESS;
+    }
+
+    public String deletarExameRealizado() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+        exameRealizadoSession.deletarExameRealizado(cdFuncionario, cdExame);
+        return SUCCESS;
+    }
+
+    public String relatorio() {
+	   	 if (session.get("usuarioLogado") == null) {
+			 return LOGIN;
+		 }
+        return SUCCESS;
+    }
+
+    public String gerarRelatorio() {
+    	
+        examesRealizados = exameRealizadoSession.listarExamesRealizadosPorPeriodo(dtInicial, dtFinal);
+        ActionContext.getContext().put("examesRealizados", examesRealizados);
+        return SUCCESS;
+    }
 	
     public List<ExameRealizado> getExamesRealizados() {
         return examesRealizados;
