@@ -19,7 +19,7 @@
 		class="d-flex align-items-center justify-content-center full-height">
 		<div class="card" style="width: 50rem;">
 			<div class="card-header text-center">
-				<h2>Lista de funcionários</h2>
+				<h2>Relatório de exames realizados</h2>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
